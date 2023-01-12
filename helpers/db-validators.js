@@ -11,4 +11,9 @@ const emailExist = async(correo = '') => {
     if(exist) throw new Error(`El correo ${correo} ya existe en la base de datos. `)
 }
 
-module.exports = {isValidRole, emailExist}
+const existUserById = async(id) => {
+    const exist = await Usuario.findById(id);
+    if(!exist) throw new Error(`El id ${id} no se encuentra en BD. `)
+}
+
+module.exports = {isValidRole, emailExist, existUserById}

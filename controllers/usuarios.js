@@ -2,14 +2,23 @@ const {request, response} = require('express')
 const Usuario = require('../models/usuario')
 const bcryptjs = require('bcryptjs');
 
-const usuariosGet = (req = request, res = response) => {
+const usuariosGet = async(req = request, res = response) => {
+    const query = {estado: true}
 
-    const {name, apiKey, limit = 1} = req.query;
+    const { limit = 5, from = 0 } = req.query
+
+    //Cuando queremos ejecutar dos peticiones al tiempo
+
+    const [total, usuarios] = await Promise.all([
+        Usuario.countDocuments(query),
+        Usuario.find(query)
+            .limit(Number(limit))
+            .skip(Number(from))
+    ])
+
     res.json({
-        msg: 'get API - CONTROLLER',
-        name,
-        apiKey,
-        limit
+        total, 
+        usuarios
     });
 }
 
@@ -42,7 +51,7 @@ const usuariosPost = async(req, res = response) => {
 const usuariosPut = async(req, res = response) => {
 
     const {id} = req.params
-    const {password, google, correo, ...resto } = req.body
+    const { _id, password, google, correo, ...resto } = req.body
 
     // TODO Validar contra base de datos
 
@@ -62,15 +71,18 @@ const usuariosPut = async(req, res = response) => {
 
 
     res.json({
-        msg: 'get PUT - CONTROLLER',
-        id
+        usuario
     });
 }
 
-const usuariosDelete = (req, res = response) => {
-    res.json({
-        msg: 'get DELETE - CONTROLLER'
-    });
+const usuariosDelete = async(req, res = response) => {
+
+    const {id} = req.params
+
+    // Físicamente lo borramos
+    const usuario = await Usuario.findByIdAndUpdate(id, {estado: false})
+
+    res.json(usuario);
 }
 
 module.exports = {

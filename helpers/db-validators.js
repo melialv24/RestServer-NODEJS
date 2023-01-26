@@ -16,4 +16,11 @@ const existUserById = async(id) => {
     if(!exist) throw new Error(`El id ${id} no se encuentra en BD. `)
 }
 
+const coleccionesPermitidas = ( coleccion='', colecciones = []) => {
+    const incluida = colecciones.includes(coleccion)
+
+    if(!incluida) throw new Error(`La coleccion ${coleccion} no es permitida, ${colecciones}`)
+    return true
+}
+
 module.exports = {isValidRole, emailExist, existUserById}

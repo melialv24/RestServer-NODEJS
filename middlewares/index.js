@@ -3,6 +3,7 @@ const validarJWT =  require('./validar-jwt')
 const validaRoles =  require('./validar-roles')
 const existeCategoria =  require('./existeCategoria')
 const existeProducto =  require('./existeProducto')
+const validarArchivos = require('./validar-archivo')
 
 
 module.exports = {
@@ -10,5 +11,6 @@ module.exports = {
     ...validarJWT,
     ...validaRoles,
     ...existeCategoria,
-    ...existeProducto
+    ...existeProducto,
+    ...validarArchivos
 }

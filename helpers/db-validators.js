@@ -23,4 +23,4 @@ const coleccionesPermitidas = ( coleccion='', colecciones = []) => {
     return true
 }
 
-module.exports = {isValidRole, emailExist, existUserById}
+module.exports = {isValidRole, emailExist, existUserById, coleccionesPermitidas}
